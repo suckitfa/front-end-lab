@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>
+        异步编程
+    </title>
+</head>
+
+<body>
+    <script>
+        // 等待一秒
+        // setTimeout(function cbFn() {
+        //     console.log("LearnInPro");
+        // }, 1000);
+
+        // console.log("sync things");
+        // setTimeout就是一个异步任务，当JS引擎顺序执行到setTimeout的时候发现他是个异步任务，
+        // 则会把这个任务挂起，继续执行后面的代码。直到1000ms后，
+        // 回调函数cbFn才会执行，这就是异步，在执行到setTimeout的时候，
+        // JS并不会傻呵呵的等着1000ms执行cbFn回调函数，而是继续执行了后面的代码。
+        // 常见的异步方式： 
+        // 回调函数
+        // 事件监听
+        // 发布/订阅模式（又称观察者模式）
+        // promise
+
+        // 宏任务: setTimeout、setInterval等，会被放在宏任务（macrotask）队列。
+        // 微任务: Promise的then、Mutation Observer等，会被放在微任务（microtask）队列。
+        // Event Loop的执行顺序是：
+        // 首先执行执行栈里的任务。
+        // 执行栈清空后，检查微任务（microtask）队列，将可执行的微任务全部执行。
+        // 取宏任务（macrotask）队列中的第一项执行。
+        // 回到第二步。
+        // 注意： 微任务队列每次全执行，宏任务队列每次只取一项执行。
+    </script>
+    <script>
+        // function* countAppleSales() {
+        //     var saleList = [3, 7, 5];
+        //     for (var i = 0; i < saleList.length; i++) {
+        //         yield saleList[i];
+        //     }
+        // }
+        // console.log(countAppleSales);
+        // var myArr = countAppleSales();
+        // console.log(myArr);
+        // console.log(myArr.next(countAppleSales()));
+        // console.log(myArr.next());
+        // console.log(myArr.next());
+        // console.log(myArr.next());
+        var fibonacci = function(n) {
+            let n1 = 1,
+                n2 = 1;
+            for (let i = 2; i < n; i++) {
+                [n1, n2] = [n2, n1 + n2];
+            }
+            return n2;
+        }
+        for (let i = 1; i <= 10; i++) {
+            console.log(fibonacci(i));
+        }
+    </script>
+</body>
+
+</html>

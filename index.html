@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>实验一</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+        
+        .card {
+            height: 80px;
+            text-align: center;
+            line-height: 80px;
+            width: 60px;
+            border: 1px solid #000;
+            float: left;
+            margin-right: 20px;
+        }
+        /* 清除浮动 */
+        
+        main h1 {
+            margin-left: 10px;
+        }
+        
+        #wrapper {
+            margin-top: 20px;
+            margin-bottom: 20px;
+        }
+        
+        #wrapper div:nth-child(1) {
+            margin-left: 10px;
+        }
+        
+        #wrapper div:last-child {
+            margin-right: 10px;
+        }
+        
+        #wrapper::after {
+            content: "";
+            display: block;
+            clear: both;
+        }
+        
+        .addEnd {
+            color: red;
+            background-color: greenyellow;
+        }
+        
+        main {
+            border: 1px solid black;
+            display: inline-block;
+            margin-top: 20px;
+            /* margin-left: 200px; */
+            width: 412px;
+            height: 180px;
+        }
+        
+        body {
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+    <main>
+        <h1 id="title"></h1>
+        <div id="wrapper">
+        </div>
+    </main>
+    <script>
+        // 生成n个 min,到max之间的整数（包含min,max），用数组返回
+        //异常情况返回空数组
+        function getNumbers(n, min, max) {
+            let nums = [];
+            if (n < 0) return nums;
+            // 循环生成
+            for (let i = 1; i <= n; i++) {
+                let num = Math.floor(Math.random() * (max - min + 1) + min);
+                nums.push(num);
+            }
+
+            return nums;
+        }
+
+        // let nums = getNumbers(5, 1, 5);
+        // for (let i = 1; i <= 5; i++) {
+        //     console.log(nums[i - 1]);
+        // }
+        // 在数组nums中找到两个和为sum的数，输出所在的坐标
+        function findNumbers(nums, sum) {
+            const map = new Map();
+            for (let i = 0; i < nums.length; i++) {
+                const res = sum - nums[i];
+                if (map.has(res)) {
+                    return [map.get(res), i]
+                } else {
+                    map.set(nums[i], i);
+                }
+            }
+        }
+        // let nums = [2, 7, 11, 15];
+        // let sum = 18;
+        // console.log(findNumbers(nums, sum));
+    </script>
+
+    <script>
+        // 生成一个带有数字的卡片
+        class Card {
+            constructor(num, isAddend) {
+                this.num = num;
+                this.isAddend = isAddend;
+            }
+            getHTML() {
+                // card为一个节点可以进行设置
+                let card = document.createElement("div");
+                card.textContent = this.num;
+                card.className = "card";
+                return card;
+            }
+        }
+        // let card1 = new Card(1, false).getHTML();
+        // let card2 = new Card(2, false).getHTML();
+        // wrapper.appendChild(card1);
+        // wrapper.appendChild(card2);
+    </script>
+    <script>
+        window.onload = function() {
+            let sum = getNumbers(1, 1, 10)[0];
+            title.textContent = `寻找和为${sum}的两个数`;
+            let nums = getNumbers(5, 1, 10);
+            let addNumIndexes = findNumbers(nums, sum);
+            let cards = [];
+
+            for (let i = 0; i < nums.length; i++) {
+                let card = new Card(nums[i], false);
+                // if (typeof addNumIndexes !== "undefined") {
+                //     card = new Card(nums[i], (i in addNumIndexes));
+                // } else {
+                //     card = new Card(nums[i], false);
+                // }
+                cards.push(card);
+            }
+
+
+
+            if (typeof addNumIndexes !== "undefined") {
+                // cards[addNumIndexes[0]].isAddend = true;
+                // cards[addNumIndexes[1]].isAddend = true;
+                let add1 = addNumIndexes[0];
+                let add2 = addNumIndexes[1];
+                cards[add1].isAddend = true;
+                cards[add2].isAddend = true;
+            } else {
+                console.log("Noooooo")
+            }
+            for (let i = 0; i < cards.length; i++) {
+                let card = cards[i].getHTML();
+                if (cards[i].isAddend === true) {
+                    card.className = "addEnd card";
+                }
+                wrapper.appendChild(card);
+
+            }
+            // for (let card in cards) {
+            //     if (card.isAddend) {
+            //         card.getHTML().className = "card addEnd";
+            //     }
+            // }
+        }
+    </script>
+</body>
+
+</html>

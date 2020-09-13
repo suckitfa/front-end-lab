@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>斐波那契额数列</title>
+    <style>
+        .numbers {
+            display: inline-block;
+            height: 80px;
+            width: 60px;
+            border: 1px solid black;
+            margin-right: 10px;
+            text-align: center;
+            line-height: 80px;
+        }
+        
+        #wrapper div:last-child {
+            background-color: yellowgreen;
+            color: red;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>斐波那契额数列：</h1>
+    <div id="wrapper"></div>
+    <script>
+        window.onload = displayDivs;
+
+
+        // 生成器函数
+        function* fabonaci() {
+            let a = 1
+            let b = 1
+            for (let i = 1; i <= 10; i++) {
+                //补充代码
+                a = 1;
+                b = 1;
+                for (let y = 2; y < i; y++) {
+                    [a, b] = [b, a + b];
+                }
+                let t = {
+                    id: i,
+                    num: b
+                };
+                yield t;
+            }
+        };
+        class Card {
+            constructor(id, num) {
+                this.id = id
+                this.num = num
+            }
+            getHTML() {
+                return `<div id="num_${this.id}" class="numbers changed">${this.num}</div>`
+            }
+        }
+
+        async function displayDivs() {
+            let fab = fabonaci()
+            while (displayDiv(fab)) {
+                await sleep(1)
+            }
+        }
+
+        function displayDiv(fab) {
+            let {
+                value,
+                done
+            } = fab.next()
+            if (!done) {
+                let card = new Card(value.id, value.num);
+                let doc = new DOMParser().parseFromString(card.getHTML(), 'text/html');
+                const div = doc.querySelector(".numbers");
+                div.className = "numbers";
+                wrapper.appendChild(div);
+            }
+            return !done
+        }
+
+        function sleep(seconds) {
+            return new Promise((resolve) => {
+                setTimeout(function() {
+                    resolve()
+                }, seconds * 1000)
+            })
+        }
+    </script>
+</body>
+
+</html>
